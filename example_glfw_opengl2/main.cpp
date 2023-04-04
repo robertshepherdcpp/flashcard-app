@@ -57,6 +57,8 @@ int main(int, char**)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.54f, 0.66f, 0.60f, 0.86f);
     bool randome_window = false;
+    std::string _question{};
+    bool to_test_flash_cards = false;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -93,11 +95,8 @@ int main(int, char**)
                 std::mt19937 rng(dev());
                 std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 1); // distribution in range [1, 6]
                 auto random = dist6(rng);
-
-                {
-                    ImGui::Begin(vec[random].question.c_str());
-                    ImGui::End();
-                };
+                to_test_flash_cards = true;
+                _question = vec[random].question;
             }
             if (ImGui::Button("Add another flash card"))
             {
@@ -199,18 +198,15 @@ int main(int, char**)
             ImGui::End();
         }
 
-        if (randome_window)
+        if (to_test_flash_cards)
         {
             {
-                ImGui::Begin("Random Window");
-
-                if (ImGui::Button("Stop"))
+                ImGui::Begin(_question.c_str());
+                if (ImGui::Button("Hello!"))
                 {
-                    randome_window = false;
                 }
-
                 ImGui::End();
-            }
+            };
         }
 
             // Rendering
