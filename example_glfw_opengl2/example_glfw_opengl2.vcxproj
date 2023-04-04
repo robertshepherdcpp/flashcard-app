@@ -175,6 +175,9 @@
     <None Include="..\..\misc\debuggers\imgui.natvis" />
     <None Include="..\README.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="flashcards.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

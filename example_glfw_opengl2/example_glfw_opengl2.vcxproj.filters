@@ -58,4 +58,7 @@
       <Filter>imgui</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="flashcards.txt" />
+  </ItemGroup>
 </Project>
