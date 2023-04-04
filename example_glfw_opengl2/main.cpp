@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <GLFW/glfw3.h>
 #include <fstream>
+#include <vector>
+#include <iostream>
+#include <string>
+#include <random>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -14,9 +18,22 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
-auto exceeds_limit(int a, int limit)
+struct flash_card
 {
-    return a < limit;
+    std::string question{};
+    std::string answer{};
+};
+
+auto get_question(std::string s) -> std::string
+{
+    int index = s.find("..|..");
+    return s.substr(0, index - 1);
+}
+
+auto get_answer(std::string s) -> std::string
+{
+    int index = s.find("..|..");
+    return s.substr(index + 5, s.size());
 }
 
 int main(int, char**)
@@ -58,6 +75,29 @@ int main(int, char**)
             if (ImGui::Button("Test Me on flash cards"))
             {
                 /*Test on flash cards using a file*/
+                std::string line{};
+                std::vector<flash_card> vec{};
+                std::ifstream myfile("words.txt");
+                if (myfile.is_open())
+                {
+                    while (std::getline(myfile, line))
+                    {
+                        std::string first_part = get_question(line);
+                        std::string second_part = get_answer(line);
+                        vec.push_back(flash_card{first_part, second_part});
+                    }
+                    myfile.close();
+                }
+
+                std::random_device dev;
+                std::mt19937 rng(dev());
+                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 1005); // distribution in range [1, 6]
+                auto random = dist6(rng);
+
+                {
+                    ImGui::Begin(vec[random].question.c_str());
+                    ImGui::End();
+                };
             }
             if (ImGui::Button("Add another flash card"))
             {
