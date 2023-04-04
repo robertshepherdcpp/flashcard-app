@@ -77,7 +77,7 @@ int main(int, char**)
                 /*Test on flash cards using a file*/
                 std::string line{};
                 std::vector<flash_card> vec{};
-                std::ifstream myfile("words.txt");
+                std::ifstream myfile("flashcards.txt");
                 if (myfile.is_open())
                 {
                     while (std::getline(myfile, line))
