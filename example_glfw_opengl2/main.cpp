@@ -60,6 +60,10 @@ int main(int, char**)
     std::string _question{};
     bool to_test_flash_cards = false;
 
+    bool _to_test_flash_cards = false;
+    std::string __question{};
+    std::string __answer{};
+
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
@@ -104,6 +108,27 @@ int main(int, char**)
             }
             if (ImGui::Button("Show me the flash cards"))
             {
+                std::string line{};
+                std::vector<flash_card> vec{};
+                std::ifstream myfile("flashcards.txt");
+                if (myfile.is_open())
+                {
+                    while (std::getline(myfile, line))
+                    {
+                        std::string first_part = get_question(line);
+                        std::string second_part = get_answer(line);
+                        vec.push_back(flash_card{ first_part, second_part });
+                    }
+                    myfile.close();
+                }
+
+                std::random_device dev;
+                std::mt19937 rng(dev());
+                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, vec.size()); // distribution in range [1, vec.size()]
+                auto random = dist6(rng);
+                _to_test_flash_cards = true;
+                __question = vec[random].question;
+                __answer = vec[random].answer;
                 /*Open a window that shows all of the flash cards and opens new windows for new flash cards*/
             }
             if (ImGui::Button("Quit"))
@@ -203,6 +228,17 @@ int main(int, char**)
             {
                 ImGui::Begin(_question.c_str());
                 if (ImGui::Button("Hello!"))
+                {
+                }
+                ImGui::End();
+            };
+        }
+
+        if (_to_test_flash_cards)
+        {
+            {
+                ImGui::Begin(_question.c_str());
+                if (ImGui::Button(__answer.c_str()))
                 {
                 }
                 ImGui::End();
