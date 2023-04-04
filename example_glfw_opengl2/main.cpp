@@ -109,6 +109,9 @@ int main(int, char**)
                 ImGui::InputText("Enter your question ", question, 256);
                 char answer[256];
                 ImGui::InputText("Enter your answer: ", question, 256);
+
+                std::ofstream file("flashcards.txt");
+                file << question << "..|.." << answer;
             }
             if (ImGui::Button("Show me the flash cards"))
             {
