@@ -105,6 +105,10 @@ int main(int, char**)
             if (ImGui::Button("Add another flash card"))
             {
                 /*Add another flash card to the flash cards file*/
+                char question[256];
+                ImGui::InputText("Enter your question ", question, 256);
+                char answer[256];
+                ImGui::InputText("Enter your answer: ", question, 256);
             }
             if (ImGui::Button("Show me the flash cards"))
             {
