@@ -1,2 +1,5 @@
 What is the capital of Italy? ..|.. Rome
-What is the capital of England ..|.. London
+What is the capital of England? ..|.. London
+What is the capital of Scotland? ..|.. Edinburgh
+What is the best computer programming language? ..|.. C++
+What is the best city in England? ..|.. London
