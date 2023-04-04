@@ -63,6 +63,7 @@ int main(int, char**)
     bool _to_test_flash_cards = false;
     std::string __question{};
     std::string __answer{};
+    bool open_input_window = false;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -105,13 +106,7 @@ int main(int, char**)
             if (ImGui::Button("Add another flash card"))
             {
                 /*Add another flash card to the flash cards file*/
-                char question[256];
-                ImGui::InputText("Enter your question ", question, 256);
-                char answer[256];
-                ImGui::InputText("Enter your answer: ", question, 256);
-
-                std::ofstream file("flashcards.txt");
-                file << question << "..|.." << answer;
+                open_input_window = true;
             }
             if (ImGui::Button("Show me the flash cards"))
             {
@@ -228,6 +223,23 @@ int main(int, char**)
             //ImGui::Text("Click Here To Stop");
 
             ImGui::End();
+        }
+        if (open_input_window)
+        {
+            {
+                ImGui::Begin("Input");
+                if (ImGui::Button("xyz"))
+                {
+                }
+                char question[256];
+                ImGui::InputText("Enter your question ", question, 256);
+                char answer[256];
+                ImGui::InputText("Enter your answer: ", question, 256);
+
+                std::ofstream file("flashcards.txt");
+                file << question << "..|.." << answer;
+                ImGui::End();
+            }
         }
 
         if (to_test_flash_cards)
