@@ -64,8 +64,9 @@ int main(int, char**)
     std::string __question{};
     std::string __answer{};
     bool open_input_window = false;
+    bool window_open = true;
 
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window) && window_open)
     {
         glfwPollEvents();
 
@@ -73,7 +74,6 @@ int main(int, char**)
         ImGui_ImplOpenGL2_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        static bool window_open = true;
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         {
