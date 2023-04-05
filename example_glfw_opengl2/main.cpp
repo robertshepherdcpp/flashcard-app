@@ -231,9 +231,9 @@ int main(int, char**)
                 if (ImGui::Button("xyz"))
                 {
                 }
-                char question[256];
+                char question[25];
                 ImGui::InputText("Enter your question ", question, 256);
-                char answer[256];
+                char answer[25];
                 ImGui::InputText("Enter your answer: ", question, 256);
 
                 std::ofstream file("flashcards.txt");
