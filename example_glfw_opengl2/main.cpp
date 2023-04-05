@@ -232,9 +232,9 @@ int main(int, char**)
                 {
                 }
                 char question[25];
-                ImGui::InputText("Enter your question ", question, 256);
+                ImGui::InputText("Enter your question ", question, 25);
                 char answer[25];
-                ImGui::InputText("Enter your answer: ", question, 256);
+                ImGui::InputText("Enter your answer: ", question, 25);
 
                 std::ofstream file("flashcards.txt");
                 file << question << "..|.." << answer;

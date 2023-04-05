@@ -1,4 +1,4 @@
-What is the capital of Italy? ..|.. Rome
+﻿What is the capital of Italy? ..|.. Rome
 What is the capital of England? ..|.. London
 What is the capital of Scotland? ..|.. Edinburgh
 What is the best computer programming language? ..|.. C++
@@ -9,3 +9,6 @@ What is a good song? ..|.. Like Shining Star
 What language is Robert currently learning? ..|.. Chinese
 What is Robert's favourite programming language? ..|.. C++
 What language is Robert learning in school? ..|.. Python
+What is hello in Spanish? ..|.. Hola
+What is hello in Chinese? ..|.. 你好
+What is Robert in Chinese ..|.. 罗伯特
