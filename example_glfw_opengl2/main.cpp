@@ -245,6 +245,7 @@ int main(int, char**)
         if (to_test_flash_cards)
         {
             {
+                ImGui::SetNextWindowSize(ImVec2(600, 200));
                 ImGui::Begin(_question.c_str());
                 if (ImGui::Button("Hello!"))
                 {
@@ -256,6 +257,7 @@ int main(int, char**)
         if (_to_test_flash_cards)
         {
             {
+                ImGui::SetNextWindowSize(ImVec2(600, 200));
                 ImGui::Begin(__question.c_str());
                 if (ImGui::Button(__answer.c_str()))
                 {
