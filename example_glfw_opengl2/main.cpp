@@ -59,7 +59,8 @@ int main(int, char**)
     bool randome_window = false;
     std::string _question{};
     bool to_test_flash_cards = false;
-
+    bool done_answer = false;
+    bool done_question = false;
     bool _to_test_flash_cards = false;
     std::string __question{};
     std::string __answer{};
@@ -226,15 +227,29 @@ int main(int, char**)
         }
         if (open_input_window)
         {
+            char question[256] = {};
+            char answer[256] = {};
             {
+                if (ImGui::Button("You chose to add another flash card"));
                 ImGui::Begin("Input");
-                char question[25];
-                ImGui::InputText("Enter your question ", question, 25);
-                char answer[25];
-                ImGui::InputText("Enter your answer: ", question, 25);
+                char question[256] = {};
+                if (!done_question)
+                {
+                    ImGui::InputText("Enter your question ", question, 256);
+                    done_question = true;
+                }
 
-                std::ofstream file("flashcards.txt");
-                file << question << "..|.." << answer;
+                if (!done_answer)
+                {
+                    ImGui::InputText("Enter your answer: ", answer, 256);
+                    done_question = true;
+                }
+                if (ImGui::Button("Finish"))
+                {
+                    std::ofstream file("flashcards.txt", std::ios::app);
+                    file << question << "..|.." << answer;
+                    open_input_window = false;
+                }
                 ImGui::End();
             }
         }
