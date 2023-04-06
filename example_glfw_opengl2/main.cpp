@@ -228,9 +228,6 @@ int main(int, char**)
         {
             {
                 ImGui::Begin("Input");
-                if (ImGui::Button("xyz"))
-                {
-                }
                 char question[25];
                 ImGui::InputText("Enter your question ", question, 25);
                 char answer[25];
