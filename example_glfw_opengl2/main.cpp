@@ -259,9 +259,6 @@ int main(int, char**)
             {
                 ImGui::SetNextWindowSize(ImVec2(600, 200));
                 ImGui::Begin(_question.c_str());
-                if (ImGui::Button("Hello!"))
-                {
-                }
                 ImGui::End();
             };
         }
