@@ -268,7 +268,7 @@ int main(int, char**)
             {
                 ImGui::SetNextWindowSize(ImVec2(600, 200));
                 ImGui::Begin(__question.c_str());
-                std::string value = (std::string{ __question.c_str() } + std::string{ " : " } + std::string{ __answer.c_str() });
+                std::string value = (std::string{"Question, "} + std::string{__question.c_str()} + std::string{" : "} + std::string{__answer.c_str()});
                 if (ImGui::Button(value.c_str()))
                 {
                 }
