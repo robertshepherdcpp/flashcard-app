@@ -66,6 +66,7 @@ int main(int, char**)
     std::string __answer{};
     bool open_input_window = false;
     bool window_open = true;
+    bool is_button_already_held = false;
 
     while (!glfwWindowShouldClose(window) && window_open)
     {
@@ -259,6 +260,27 @@ int main(int, char**)
             {
                 ImGui::SetNextWindowSize(ImVec2(600, 200));
                 ImGui::Begin(_question.c_str());
+                if (ImGui::Button("Hint"))
+                {
+                    if (is_button_already_held)
+                    {
+                        is_button_already_held = false;
+                    }
+                    else
+                    {
+                        is_button_already_held = true;
+                    }
+                }
+                while (!is_button_already_held)
+                {
+                    std::string s{ __answer.c_str() };
+                    std::string s2 = std::string{ "The first two letters: " } + s.substr(0, 2);
+                    if (ImGui::Button(s2.c_str()))
+                    {
+                        // Do nothing!
+                    }
+                    is_button_already_held = true;
+                }
                 ImGui::End();
             };
         }
