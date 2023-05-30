@@ -255,20 +255,6 @@ int main(int, char**)
             }
         }
 
-        if (is_button_already_held)
-        {
-            {
-                ImGui::SetNextWindowSize(ImVec2(300, 100));
-                ImGui::Begin(_question.c_str());
-                std::string s{ __answer.c_str() };
-                std::string s2 = std::string{ "The first two letters: " } + std::string{s[0]} + std::string{s[1]};
-                if (ImGui::Button(s2.c_str()))
-                {
-
-                }
-            }
-        }
-
         if (to_test_flash_cards)
         {
             {
@@ -285,9 +271,23 @@ int main(int, char**)
                         is_button_already_held = true;
                     }
                 }
-                }
                 ImGui::End();
             };
+        }
+
+        if (is_button_already_held)
+        {
+            {
+                ImGui::SetNextWindowSize(ImVec2(300, 100));
+                ImGui::Begin(_question.c_str());
+                std::string s{ __answer.c_str() };
+                std::string s2 = std::string{ "The first two letters: " } + std::string{ s[0] } + std::string{ s[1] };
+                if (ImGui::Button(s2.c_str()))
+                {
+
+                }
+            }
+            ImGui::End();
         }
 
         if (_to_test_flash_cards)
