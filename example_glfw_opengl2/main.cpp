@@ -49,7 +49,10 @@ int main(int, char**)
     glfwSwapInterval(1);
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO const& io = ImGui::GetIO(); (void)io;
+    ImGuiIO const& io = ImGui::GetIO();
+    // C:\\Windows\\Fonts\\8514oem Regular
+    ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\msyh.ttc",
+        16.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
     ImGui::StyleColorsLight();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL2_Init();
