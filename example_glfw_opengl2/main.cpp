@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 #include <random>
+#include <thread>
+#include <chrono>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -287,7 +289,8 @@ int main(int, char**)
                 std::string s2 = std::string{ "The first two letters: " } + std::string{ s[0] } + std::string{ s[1] };
                 if (ImGui::Button(s2.c_str()))
                 {
-
+                    // this its so that the answer can be shown
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
                 }
             }
             ImGui::End();
