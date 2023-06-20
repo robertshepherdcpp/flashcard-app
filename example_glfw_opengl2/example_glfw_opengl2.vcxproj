@@ -182,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="flashcards.txt" />
+    <Text Include="users.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

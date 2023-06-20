@@ -63,5 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="flashcards.txt" />
+    <Text Include="users.txt">
+      <Filter>sources</Filter>
+    </Text>
   </ItemGroup>
 </Project>

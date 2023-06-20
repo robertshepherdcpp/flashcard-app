@@ -1,80 +1,279 @@
+// Dear ImGui: standalone example application for GLFW + OpenGL2, using legacy fixed pipeline
+// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
+// If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
+// Read online: https://github.com/ocornut/imgui/tree/master/docs
+
+// **DO NOT USE THIS CODE IF YOUR CODE/ENGINE IS USING MODERN OPENGL (SHADERS, VBO, VAO, etc.)**
+// **Prefer using the code in the example_glfw_opengl2/ folder**
+// See imgui_impl_glfw.cpp for details.
+
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
 #include <stdio.h>
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION
+#endif
 #include <GLFW/glfw3.h>
-#include <fstream>
-#include <vector>
-#include <iostream>
-#include <string>
-#include <random>
-#include <thread>
-#include <chrono>
+#include <string> // std::string
+#include <vector> // std::vector
+#include <fstream> // file manipulation
+#include <random> // for random things.
+#include <iostream> // std::cin
 
+// [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
+// To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
+// Your own project should not be affected, as you are likely to link with a newer binary of GLFW that is adequate for your version of Visual Studio.
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
 static void glfw_error_callback(int error, const char* description)
 {
-    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
-struct flash_card
+namespace exceptions
+{
+    struct Exception
+    {
+        std::string what{};
+    };
+
+    // Just inherit the properties
+    struct BadArguementPassed : Exception
+    {
+    };
+}; // namespace exceptions
+
+struct flashcard
 {
     std::string question{};
     std::string answer{};
 };
 
-auto get_question(std::string s) -> std::string
+auto get_question(std::string& s) -> std::string
 {
-    int index = s.find("..|..");
+    auto index = s.find("||");
     return s.substr(0, index - 1);
 }
 
-auto get_answer(std::string s) -> std::string
+auto get_answer(std::string& s) -> std::string
 {
-    int index = s.find("..|..");
-    return s.substr(index + 5, s.size());
+    auto index = s.find("||");
+    return s.substr(index + 3, s.size());
 }
 
+auto find_in_vec(std::string& x, std::vector<std::string>& vec)
+{
+    for (int i = 0; i < vec.size(); i++)
+    {
+        if (vec[i] == x)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+auto get_random_number(auto mod)
+{
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist(1, mod);
+    return dist(rng);
+}
+
+// this container is to help simplify the code
+struct optional_bool
+{
+    optional_bool(bool first_, bool second_)
+        : m_first{ first_ }, m_second{ second_ }
+    {
+    }
+
+    bool m_first = true;
+    bool m_second = false;
+
+    // to help express intend more clearly
+    std::string m_first_name{};
+    std::string m_second_name{};
+
+    auto set_bools(bool a, bool b)
+    {
+        m_first = a;
+        m_second = b;
+    }
+
+    auto set_names(std::string first_name_, std::string second_name_) -> void
+    {
+        m_first_name = first_name_;
+        m_second_name = second_name_;
+    }
+
+    auto get_by_name(std::string name_) -> bool
+    {
+        if (name_ == m_first_name)
+        {
+            return m_first;
+        }
+        if (name_ == m_second_name)
+        {
+            return m_second;
+        }
+        else
+        {
+            throw exceptions::BadArguementPassed{"The name passed to get_by_name, was not set by set_names"};
+        }
+    }
+
+    auto flip()
+    {
+        if (m_first)
+        {
+            m_first = false;
+            m_second = true;
+        }
+        else if (m_second)
+        {
+            m_first = true;
+            m_second = false;
+        }
+    }
+};
+
+struct user
+{
+    std::string username{};
+    std::string password{};
+    int score{};
+
+    user(std::string x, std::string y, int z)
+        : username{ x }, password{ y }, score{ z }
+    {
+    }
+
+    user() {} // do nothing
+
+    auto operator=(user x_user)
+        //: username{ x_user.username }, password{x_user.password}, score{x_user.score}
+    {
+        username = x_user.username;
+        password = x_user.password;
+        score = x_user.score;
+    }
+};
+
+// Main code
 int main(int, char**)
 {
-    // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL2 example", NULL, NULL);
-    if (window == NULL)
+
+    // Create window with graphics context
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL2 example", nullptr, nullptr);
+    if (window == nullptr)
         return 1;
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    glfwSwapInterval(1); // Enable vsync
+
+    // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO const& io = ImGui::GetIO();
-    // C:\\Windows\\Fonts\\8514oem Regular
-    ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\msyh.ttc",
-        16.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
-    ImGui::StyleColorsLight();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsLight();
+
+    // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL2_Init();
+
+    // Our state
     bool show_demo_window = true;
     bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.54f, 0.66f, 0.60f, 0.86f);
-    bool randome_window = false;
-    std::string _question{};
-    bool to_test_flash_cards = false;
-    bool done_answer = false;
-    bool done_question = false;
-    bool _to_test_flash_cards = false;
-    std::string __question{};
-    std::string __answer{};
-    bool open_input_window = false;
-    bool window_open = true;
-    bool is_button_already_held = false;
-
-    while (!glfwWindowShouldClose(window) && window_open)
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    bool show_the_flashcards_window = false;
+    float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
+    int current_flashcard_position = 0;
+    bool give_error_message_answer_question = false;
+    optional_bool IsQuestionAnswer{true, false};
+    IsQuestionAnswer.set_names("IsQuestion", "IsAnswer");
+    int point_count = 0;
+    bool celebrate_thousand_points = false;
+    bool login_window = false;
+    bool user_logged_in = false;
+    optional_bool LaunchFlashCard{false, false};
+    LaunchFlashCard.set_names("launch_flash_card", "launch_flash_card_other");
+    bool login_page_open = true;
+    bool login_window_option = false;
+    user current_user{};
+    bool test_on_flash_cards = false;
+    std::vector<std::string> usernames{};
+    std::vector<std::string> passwords{};
+    std::vector<user> users = [&]()
     {
+        std::string line{};
+        std::vector<user> vec{};
+        std::ifstream myfile("users.txt");
+        if (myfile.is_open())
+        {
+            while (std::getline(myfile, line))
+            {
+                std::string username = [&]()
+                {
+                    int index_of_chevrons_into = line.find("<<");
+                    usernames.push_back(std::string{ line.substr(0, index_of_chevrons_into - 1) });
+                    return std::string{ line.substr(0, index_of_chevrons_into - 1) };
+                }();
+                std::string password = [&]()
+                {
+                    int index_of_chevrons_into = line.find("<<");
+                    int index_of_chevrons_outo = line.find(">>");
+                    passwords.push_back(std::string{ line.substr(index_of_chevrons_into + 3, index_of_chevrons_outo - 1) });
+                    return std::string{line.substr(index_of_chevrons_into + 3, index_of_chevrons_outo - 1)};
+                }();
+                int score = [=]()
+                {
+                    int index_of_chevrons_outo = line.find(">>");
+                    return std::stoi(std::string{line.substr(index_of_chevrons_outo + 3, line.size())});
+                }();
+                vec.push_back(user{ username, password, score });
+            }
+            myfile.close();
+        }
+        return vec;
+    }();
+    std::vector<flashcard> flashcards = [](std::string s)
+    {
+        std::string line{};
+        std::vector<flashcard> vec{};
+        std::ifstream myfile(s.c_str());
+        if (myfile.is_open())
+        {
+            while (std::getline(myfile, line))
+            {
+                std::string first_part = get_question(line);
+                std::string second_part = get_answer(line);
+                vec.push_back(flashcard{ first_part, second_part });
+            }
+            myfile.close();
+        }
+        return vec;
+    }("flashcards.txt");
+
+    // Main loop
+    while (!glfwWindowShouldClose(window))
+    {
+        // Poll and handle events (inputs, window resize, etc.)
+        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
+        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
+        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
 
         // Start the Dear ImGui frame
@@ -84,251 +283,324 @@ int main(int, char**)
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         {
-            ImGui::Begin("FlashCards++", &window_open);
-
-            if (ImGui::Button("Test Me on flash cards"))
+            ImGui::Begin("FlashCards App");
+            if (!user_logged_in)
             {
-                /*Test on flash cards using a file*/
-                std::string line{};
-                std::vector<flash_card> vec{};
-                std::ifstream myfile("flashcards.txt");
-                if (myfile.is_open())
+                if (ImGui::Button("Login"))
                 {
-                    while (std::getline(myfile, line))
-                    {
-                        std::string first_part = get_question(line);
-                        std::string second_part = get_answer(line);
-                        vec.push_back(flash_card{first_part, second_part});
-                    }
-                    myfile.close();
+                    login_window_option = true;
                 }
-
-                std::random_device dev;
-                std::mt19937 rng(dev());
-                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, vec.size() - 1); // distribution in range [1, vec.size()]
-                auto random = dist6(rng);
-                to_test_flash_cards = true;
-                _question = vec[random].question;
             }
-            if (ImGui::Button("Add another flash card"))
+            if (user_logged_in)
             {
-                /*Add another flash card to the flash cards file*/
-                open_input_window = true;
-            }
-            if (ImGui::Button("Show me the flash cards"))
-            {
-                std::string line{};
-                std::vector<flash_card> vec{};
-                std::ifstream myfile("flashcards.txt");
-                if (myfile.is_open())
+                if (ImGui::Button(current_user.username.c_str()))
                 {
-                    while (std::getline(myfile, line))
-                    {
-                        std::string first_part = get_question(line);
-                        std::string second_part = get_answer(line);
-                        vec.push_back(flash_card{ first_part, second_part });
-                    }
-                    myfile.close();
+                    // do nothing just, it is just to show their username
                 }
-
-                std::random_device dev;
-                std::mt19937 rng(dev());
-                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, vec.size() - 1); // distribution in range [1, vec.size()]
-                auto random = dist6(rng);
-                _to_test_flash_cards = true;
-                __question = vec[random].question;
-                __answer = vec[random].answer;
-                /*Open a window that shows all of the flash cards and opens new windows for new flash cards*/
-            }
-            if (ImGui::Button("Quit"))
-            {
-                /*Exit all windows*/
-                window_open = false;
-            }
-
-            //if (button < 10 && button >= 0)
-            //{
-            //    if (
-            //        ImGui::Button("Click me for how many pizzas"))
-            //    {
-            //        button++;
-            //    }
-            //    else if (ImGui::Button("Click me to get rid of some pizzas"))
-            //    {
-            //        --button;
-            //    }
-            //}
-            //else if(button >= 10)
-            //{
-            //    if (ImGui::Button("Click me to decrease some pizzas!"))
-            //    {
-            //        --button;
-            //    }
-            //}
-            //else if (button <= 0)
-            //{
-            //    ImGui::NewLine();
-            //    ImGui::Text("So your telling me you want -1 pizzas?\nThat can't be right!");
-            //}
-            //ImGui::NewLine();
-            //ImGui::Text("You want %d pizzas", button);
-
-            //ImGui::NewLine();
-
-            //if (!exceeds_limit(button, 10))
-            //{
-            //    ImGui::Text("Hold on there buddy!\nYou have reached our maximum amount of pizzas!");
-            //}
-            //else
-            //{
-            //    ImGui::Text("You can order %d more pizzas at most!", 10 - button);
-            //}
-
-            //ImGui::NewLine();
-            //if (ImGui::Button("Click here to reset"))
-            //{
-            //    button = 1;
-            //}
-
-            //ImGui::NewLine();
-            //ImGui::Bullet();
-            //ImGui::Text("Contact us on 07903873501");
-
-            //ImGui::NewLine();
-            //ImGui::Bullet();
-            //ImGui::Text("Or contact us on email at rshepherdcpp@gmail.com");
-
-            //static bool t_and_c = false;
-
-            //ImGui::NewLine();
-            //ImGui::Checkbox("Do you agree to the terms and conditions?", &t_and_c);
-
-            //if (t_and_c)
-            //{
-            //    ImGui::Text("You don't know what you just agreed to.\n");
-            //    ImGui::Text("You have agreed to give me all of your JavaScript code!");
-            //}
-
-            //ImGui::NewLine();
-            //if (ImGui::ColorButton("colourful", clear_color))
-            //{
-            //    ImGui::Text("You just chose to open a new window!\n");
-            //    ImGui::Text("Opening Now");
-
-            //    randome_window = true;
-            //}
-
-
-
-            //ImGui::NewLine();
-            //ImVec4 magical_colour = ImVec4(0.102f, 0.96f, 0.72f, 0.15f);
-
-            //if (ImGui::ColorButton("Click here to stop", magical_colour))
-            //{
-            //    break;
-            //}
-            //ImGui::Text("Click Here To Stop");
-
-            ImGui::End();
-        }
-        if (open_input_window)
-        {
-            char question[256] = {};
-            char answer[256] = {};
-            {
-                if (ImGui::Button("You chose to add another flash card"));
-                ImGui::Begin("Input");
-                char question[256] = {};
-                if (!done_question)
+                ImGui::NewLine();
+                ImGui::NewLine();
+                if (ImGui::Button("Show me the flashcards"))
                 {
-                    ImGui::InputText("Enter your question ", question, 256);
-                    done_question = true;
+                    show_the_flashcards_window = true;
                 }
-
-                if (!done_answer)
+                ImGui::NewLine();
+                /*
+                if (ImGui::Button("Add a flash card"))
                 {
-                    ImGui::InputText("Enter your answer: ", answer, 256);
-                    done_question = true;
+                    /*
+                    ImGui::Text("Check your Console for instructions");
+                    std::string question{};
+                    std::cout << "Question: ";
+                    std::cin >> question;
+                    std::string answer{};
+                    std::cout << "Answer: ";
+                    std::cin >> answer;
+                    flashcards.push_back(flashcard{ question, answer });
+                    // file handling.
+                    std::ofstream file;
+                    file.open("flashcards.txt", std::ios::out | std::ios::app);
+                    if (file.fail())
+                        throw std::ios_base::failure(std::strerror(errno));
+                    file.exceptions(file.exceptions() | std::ios::failbit | std::ifstream::badbit);
+                    file << question << " || " << answer << std::endl;
+                    file.close();
                 }
-                if (ImGui::Button("Finish"))
-                {
-                    std::ofstream file("flashcards.txt", std::ios::app);
-                    file << question << "..|.." << answer;
-                    open_input_window = false;
-                }
-                ImGui::End();
-            }
-        }
-
-        if (to_test_flash_cards)
-        {
-            {
-                ImGui::SetNextWindowSize(ImVec2(600, 200));
-                ImGui::Begin(_question.c_str());
-                if (ImGui::Button("Hint"))
-                {
-                    if (is_button_already_held)
-                    {
-                        is_button_already_held = false;
-                    }
-                    else
-                    {
-                        is_button_already_held = true;
-                    }
-                }
-                ImGui::End();
-            };
-        }
-
-        if (is_button_already_held)
-        {
-            {
-                ImGui::SetNextWindowSize(ImVec2(300, 100));
-                ImGui::Begin(_question.c_str());
-                std::string s{ __answer.c_str() };
-                std::string s2 = std::string{ "The first two letters: " } + std::string{ s[0] } + std::string{ s[1] };
-                if (ImGui::Button(s2.c_str()))
-                {
-                    // this its so that the answer can be shown
-                    std::this_thread::sleep_for(std::chrono::seconds(1));
-                }
+                */
+                ImGui::NewLine();
+                ImGui::Text("Your total point count: %d", point_count);
             }
             ImGui::End();
         }
 
-        if (_to_test_flash_cards)
+        if (login_window)
         {
+            ImGui::Begin("Login Page", &login_page_open);
+            std::string s_username{};
+            std::string s_password{};
+            bool finished_username = false;
+            bool finished_password = true;
+            static char username_[128] = {};
+            static char password_[128] = {};
+            ImGui::InputText("Enter your username: ", username_, 128);
+            ImGui::InputText("Enter your password: ", password_, 128);
+            if (ImGui::Button("Finished username"))
             {
-                ImGui::SetNextWindowSize(ImVec2(600, 200));
-                ImGui::Begin(__question.c_str());
-                std::string value = (std::string{"Question, "} + std::string{__question.c_str()} + std::string{" : "} + std::string{__answer.c_str()});
-                if (ImGui::Button(value.c_str()))
+                s_username = username_;
+            }
+            if (ImGui::Button("Finished password"))
+            {
+                s_password = password_;
+            }
+            std::string username = s_username.substr(0, s_username.find('.'));
+            std::string password = s_password.substr(0, s_password.find('.'));
+
+            if (find_in_vec(username, usernames) != -1)
+            {
+                int index = find_in_vec(username, usernames);
+                if (passwords[index] == password)
                 {
+                    current_user = users[index];
                 }
-                ImGui::End();
-            };
+                else
+                {
+                    ImGui::Text("Sorry you entered a wrong user name or password");
+                }
+            }
+            if (ImGui::Button("Continue without login"))
+            {
+                login_window = false;
+                user_logged_in = true;
+            }
+            ImGui::End();
         }
 
-            // Rendering
-            ImGui::Render();
-            int display_w, display_h;
-            glfwGetFramebufferSize(window, &display_w, &display_h);
-            glViewport(0, 0, display_w, display_h);
-            glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-            glClear(GL_COLOR_BUFFER_BIT);
+        if (login_window_option)
+        {
+            ImGui::Begin("Login page");
+            ImGui::Text("Who are you?");
+            ImGui::NewLine();
+            for (int i = 0; i < usernames.size(); i++)
+            {
+                if (ImGui::Button(usernames[i].c_str()))
+                {
+                    current_user = users[i];
+                    point_count = users[i].score;
+                    user_logged_in = true;
+                    login_window_option = false;
+                }
+            }
 
-            ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-            glfwMakeContextCurrent(window);
-            glfwSwapBuffers(window);
+            ImGui::End();
         }
 
-        // Cleanup
-        ImGui_ImplOpenGL2_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
-        ImGui::DestroyContext();
+        if (show_the_flashcards_window)
+        {
+            ImGui::Begin("FlashCard manager", &show_another_window);
+            if (ImGui::ArrowButton("##left", ImGuiDir_Left))
+            {
+                // FIXME make this actually visible
+                if (ImGui::IsItemHovered())
+                {
+                    ImGui::SetTooltip("Click me to get to the flashcard before");
+                }
 
-        glfwDestroyWindow(window);
-        glfwTerminate();
+                if ((point_count < 1000) && ((point_count + 10) >= 1000))
+                {
+                    celebrate_thousand_points = true;
+                }
+                point_count += 10;
+                IsQuestionAnswer.set_bools(true, false);
+                LaunchFlashCard.m_first = false;
+                LaunchFlashCard.m_second = true;
+                if (current_flashcard_position == 0)
+                {
+                    // do nothing
+                    current_flashcard_position += 1;
+                }
+                else
+                {
+                    current_flashcard_position -= 1;
+                    LaunchFlashCard.m_first = true;
+                }
+            }
+            ImGui::SameLine(0.0f, spacing);
+            if (ImGui::ArrowButton("##right", ImGuiDir_Right))
+            {
+                // FIXME make the item actually visible
+                if (ImGui::IsItemHovered())
+                {
+                    ImGui::SetTooltip("Click me to get to the flashcard after");
+                }
 
-        return 0;
+                if ((point_count < 1000) && ((point_count + 10) >= 1000))
+                {
+                    celebrate_thousand_points = true;
+                }
+                point_count += 10;
+                IsQuestionAnswer.flip();
+                LaunchFlashCard.m_first = true;
+                LaunchFlashCard.m_second = false;
+                if (current_flashcard_position == flashcards.size() - 1)
+                {
+                    // nothing because we cant
+                    current_flashcard_position -= 1;
+                }
+                else
+                {
+                    current_flashcard_position += 1;
+                    LaunchFlashCard.m_first = true;
+                }
+            }
+            ImGui::SameLine(0.0f, spacing);
+            if (ImGui::Button("Show"))
+            {
+                LaunchFlashCard.m_first = true;
+            }
+            ImGui::SameLine(0.0f, spacing);
+            if (ImGui::Button("?"))
+            {
+                current_flashcard_position = get_random_number(flashcards.size() - 1);
+                LaunchFlashCard.m_first = true;
+            }
+            ImGui::NewLine();
+            ImGui::NewLine();
+            if (ImGui::Button("Test"))
+            {
+                test_on_flash_cards = true;
+            }
+            ImGui::NewLine();
+            ImGui::NewLine();
+            ImGui::Text("You are currently on flashcard number %d", current_flashcard_position + 1);
+            ImGui::End();
+        }
+
+        if (test_on_flash_cards)
+        {
+            ImGui::Begin("FlashCards Test");
+            //int random_number = get_random_number(flashcards.size());
+            // FIXME
+            int random_number = 2;
+            if (random_number == 0)
+            {
+                random_number = 1;
+            }
+            if (random_number == flashcards.size() - 1)
+            {
+                random_number = flashcards.size() - 2;
+            }
+            ImGui::Text(flashcards[random_number].question.c_str());
+            if (ImGui::Button(flashcards[random_number - 1].answer.c_str()))
+            {
+                give_error_message_answer_question = true;
+                test_on_flash_cards = false;
+            }
+            if (ImGui::Button(flashcards[random_number].answer.c_str()))
+            {
+                test_on_flash_cards = false;
+            }
+            if (ImGui::Button(flashcards[random_number + 1].answer.c_str()))
+            {
+                give_error_message_answer_question = true;
+                test_on_flash_cards = false;
+            }
+
+            ImGui::End();
+        }
+
+        if (celebrate_thousand_points)
+        {
+            ImGui::Begin("Well done!");
+            ImGui::Text("You reached one thousand points! Well done");
+            ImGui::Text("Keep the hard work up! It will pay off!");
+            ImGui::NewLine();
+            if (ImGui::Button("QUIT"))
+            {
+                celebrate_thousand_points = false;
+            }
+            ImGui::End();
+        }
+
+        if (give_error_message_answer_question)
+        {
+            ImGui::Begin("You got the question wrong :(");
+            ImGui::Text("Sorry but the answer you selected was not true. Dont worry just try again :)");
+            ImGui::End();
+        }
+
+        if (LaunchFlashCard.m_first)
+        {
+            //IsQuestionAnswer.set_bools(true, false);
+            ImGui::Begin("FlashCard");
+            flashcard current_flashcard = flashcards[current_flashcard_position];
+            ImGui::Text(current_flashcard.question.c_str());
+            if (ImGui::Button("FLIP"))
+            {
+                if ((point_count < 1000) && ((point_count + 5) >= 1000))
+                {
+                    celebrate_thousand_points = true;
+                }
+                point_count += 5;
+                IsQuestionAnswer.flip();
+                LaunchFlashCard.set_bools(false, true);
+            }
+            ImGui::NewLine();
+            if (ImGui::Button("QUIT"))
+            {
+                LaunchFlashCard.m_first = false;
+            }
+            ImGui::End();
+        }
+
+        if (LaunchFlashCard.m_second)
+        {
+            ImGui::Begin("FlashCard");
+            flashcard current_flashcard = flashcards[current_flashcard_position];
+            ImGui::Text(current_flashcard.answer.c_str());
+            if (ImGui::Button("FLIP"))
+            {
+                if ((point_count < 1000) && ((point_count + 5) >= 1000))
+                {
+                    celebrate_thousand_points = true;
+                }
+                point_count += 5;
+                IsQuestionAnswer.flip();
+                LaunchFlashCard.set_bools(true, false);
+            }
+            ImGui::NewLine();
+            if (ImGui::Button("QUIT"))
+            {
+                LaunchFlashCard.m_first = false;
+            }
+            ImGui::End();
+        }
+
+        // Rendering
+        ImGui::Render();
+        int display_w, display_h;
+        glfwGetFramebufferSize(window, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // If you are using this code with non-legacy OpenGL header/contexts (which you should not, prefer using imgui_impl_opengl3.cpp!!),
+        // you may need to backup/reset/restore other state, e.g. for current shader using the commented lines below.
+        //GLint last_program;
+        //glGetIntegerv(GL_CURRENT_PROGRAM, &last_program);
+        //glUseProgram(0);
+        ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+        //glUseProgram(last_program);
+
+        glfwMakeContextCurrent(window);
+        glfwSwapBuffers(window);
     }
+
+    // Cleanup
+    ImGui_ImplOpenGL2_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
+
+    return 0;
+}
