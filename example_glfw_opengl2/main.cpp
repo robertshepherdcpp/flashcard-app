@@ -20,6 +20,7 @@
 #include <fstream> // file manipulation
 #include <random> // for random things.
 #include <iostream> // std::cin
+#include "stb_image.h"
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -164,6 +165,10 @@ struct user
     }
 };
 
+int colour_background_one = 63;
+int colour_background_two = 200;
+int colour_background_three = 6;
+
 // Main code
 int main(int, char**)
 {
@@ -181,9 +186,12 @@ int main(int, char**)
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImGuiStyle& style = ImGui::GetStyle();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    //style.Colors[ImGuiCol_Text] = ImColor(2, 2, 2);
+    //style.Colors[ImGuiCol_WindowBg] = ImColor(colour_background_one, colour_background_two, colour_background_three);
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -211,6 +219,7 @@ int main(int, char**)
     LaunchFlashCard.set_names("launch_flash_card", "launch_flash_card_other");
     bool login_page_open = true;
     bool login_window_option = false;
+    bool change_colour_background = false;
     user current_user{};
     bool test_on_flash_cards = false;
     std::vector<std::string> usernames{};
@@ -304,6 +313,10 @@ int main(int, char**)
                     show_the_flashcards_window = true;
                 }
                 ImGui::NewLine();
+                if (ImGui::Button("Change colour background"))
+                {
+                    change_colour_background = true;
+                }
                 /*
                 if (ImGui::Button("Add a flash card"))
                 {
@@ -468,6 +481,7 @@ int main(int, char**)
             {
                 test_on_flash_cards = true;
             }
+
             ImGui::NewLine();
             ImGui::NewLine();
             ImGui::Text("You are currently on flashcard number %d", current_flashcard_position + 1);
@@ -504,6 +518,72 @@ int main(int, char**)
                 test_on_flash_cards = false;
             }
 
+            ImGui::End();
+        }
+
+        if (change_colour_background)
+        {
+            ImGui::Begin("Colour Change");
+            if (ImGui::ArrowButton("##up", ImGuiDir_Up))
+            {
+                if (colour_background_one < 255)
+                {
+                    colour_background_one += 1;
+                    style.Colors[ImGuiCol_WindowBg] = ImColor(colour_background_one, colour_background_two, colour_background_three);
+                }
+            }
+            ImGui::SameLine(0.0f, spacing);
+            if (ImGui::ArrowButton("##down", ImGuiDir_Down))
+            {
+               if (colour_background_one > 0)
+               {
+                    colour_background_one -= 1;
+                    style.Colors[ImGuiCol_WindowBg] = ImColor(colour_background_one, colour_background_two, colour_background_three);
+               }
+            }
+            ImGui::SameLine(0.0f, spacing);
+            ImGui::Text("%d", colour_background_one);
+            ImGui::NewLine();
+            if (ImGui::ArrowButton("##up", ImGuiDir_Up))
+            {
+                if (colour_background_two < 255)
+                {
+                    colour_background_two += 1;
+                    style.Colors[ImGuiCol_WindowBg] = ImColor(colour_background_one, colour_background_two, colour_background_three);
+                }
+            }
+            ImGui::SameLine(0.0f, spacing);
+            if (ImGui::ArrowButton("##down", ImGuiDir_Down))
+            {
+                if (colour_background_two > 0)
+                {
+                    colour_background_two -= 1;
+                    style.Colors[ImGuiCol_WindowBg] = ImColor(colour_background_one, colour_background_two, colour_background_three);
+                }
+            }
+            ImGui::SameLine(0.0f, spacing);
+            ImGui::Text("%d", colour_background_two);
+            ImGui::NewLine();
+            if (ImGui::ArrowButton("##up", ImGuiDir_Up))
+            {
+                if (colour_background_three < 255)
+                {
+                    colour_background_three += 1;
+                    style.Colors[ImGuiCol_WindowBg] = ImColor(colour_background_one, colour_background_two, colour_background_three);
+                }
+            }
+            ImGui::SameLine(0.0f, spacing);
+            if (ImGui::ArrowButton("##down", ImGuiDir_Down))
+            {
+                if (colour_background_three > 0)
+                {
+                    colour_background_three -= 1;
+                    style.Colors[ImGuiCol_WindowBg] = ImColor(colour_background_one, colour_background_two, colour_background_three);
+                }
+            }
+            ImGui::SameLine(0.0f, spacing);
+            ImGui::Text("%d", colour_background_three);
+            ImGui::NewLine();
             ImGui::End();
         }
 

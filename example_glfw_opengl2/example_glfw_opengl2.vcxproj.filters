@@ -67,4 +67,7 @@
       <Filter>sources</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="flashcard.png" />
+  </ItemGroup>
 </Project>
