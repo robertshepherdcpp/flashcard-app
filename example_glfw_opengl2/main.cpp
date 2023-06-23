@@ -21,6 +21,7 @@
 #include <random> // for random things.
 #include <iostream> // std::cin
 #include "stb_image.h"
+#include <asio.hpp>
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -32,6 +33,69 @@
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+}
+
+using asio::ip::tcp;
+
+std::string get_website_content(const std::string& host, const std::string& path) {
+    std::string result;
+
+    try {
+        asio::io_context io_context;
+
+        // Resolve the host name and service (http in this case)
+        tcp::resolver resolver(io_context);
+        tcp::resolver::results_type endpoints = resolver.resolve(host, "http");
+
+        // Establish a connection to the server
+        tcp::socket socket(io_context);
+        asio::connect(socket, endpoints);
+
+        // Prepare the HTTP GET request
+        asio::streambuf request;
+        std::ostream request_stream(&request);
+        request_stream << "GET " << path << " HTTP/1.1\r\n";
+        request_stream << "Host: " << host << "\r\n";
+        request_stream << "Connection: close\r\n\r\n";
+
+        // Send the HTTP request
+        asio::write(socket, request);
+
+        // Read and process the response
+        asio::streambuf response;
+        asio::read_until(socket, response, "\r\n");
+
+        // Check if the response was successful
+        std::istream response_stream(&response);
+        std::string http_version;
+        response_stream >> http_version;
+        unsigned int status_code;
+        response_stream >> status_code;
+
+        if (http_version.substr(0, 5) != "HTTP/") {
+            std::cerr << "Invalid response\n";
+            return result;
+        }
+
+        if (status_code != 200) {
+            std::cerr << "Request failed with status code " << status_code << "\n";
+            return result;
+        }
+
+        // Read the rest of the response
+        asio::read(socket, response, asio::transfer_all());
+
+        // Extract the content from the response
+        std::istreambuf_iterator<char> iterator(&response);
+        std::istreambuf_iterator<char> end;
+        result.assign(iterator, end);
+
+    }
+    catch (std::exception& e) {
+        std::cerr << "Exception: " << e.what() << "\n";
+    }
+
+    return result;
 }
 
 namespace exceptions
@@ -202,6 +266,7 @@ int main(int, char**)
     ImGui_ImplOpenGL2_Init();
 
     // Our state
+    bool get_flashcards_from_web = false;
     bool show_demo_window = true;
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -485,6 +550,11 @@ int main(int, char**)
             ImGui::NewLine();
             ImGui::NewLine();
             ImGui::Text("You are currently on flashcard number %d", current_flashcard_position + 1);
+            ImGui::NewLine();
+            if (ImGui::Button("Add flashcards from the web"))
+            {
+                get_flashcards_from_web = true;
+            }
             ImGui::End();
         }
 
@@ -584,6 +654,17 @@ int main(int, char**)
             ImGui::SameLine(0.0f, spacing);
             ImGui::Text("%d", colour_background_three);
             ImGui::NewLine();
+            ImGui::End();
+        }
+
+        if (get_flashcards_from_web)
+        {
+            ImGui::Begin("Get flashcards from the web");
+            static char str0[128] = "Hello, world!";
+            ImGui::InputText("input text", str0, IM_ARRAYSIZE(str0));
+            std::string input{str0};
+            ImGui::Text(input.c_str());
+            std::string s = get_website_content(input, "/");
             ImGui::End();
         }
 
