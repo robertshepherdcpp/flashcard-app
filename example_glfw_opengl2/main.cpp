@@ -19,9 +19,46 @@
 #include <vector> // std::vector
 #include <fstream> // file manipulation
 #include <random> // for random things.
-#include <iostream> // std::cin
-#include "stb_image.h"
 #include <asio.hpp>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+#define GL_CLAMP_TO_EDGE 0x812F
+#include <iostream>
+
+// Simple helper function to load an image into a OpenGL texture with common settings
+bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
+{
+    // Load from file
+    int image_width = 0;
+    int image_height = 0;
+    unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
+    if (image_data == NULL)
+        return false;
+
+    // Create a OpenGL texture identifier
+    GLuint image_texture;
+    glGenTextures(1, &image_texture);
+    glBindTexture(GL_TEXTURE_2D, image_texture);
+
+    // Setup filtering parameters for display
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+
+    // Upload pixels into texture
+#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+#endif
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+    stbi_image_free(image_data);
+
+    *out_texture = image_texture;
+    *out_width = image_width;
+    *out_height = image_height;
+
+    return true;
+}
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -381,6 +418,28 @@ int main(int, char**)
                 if (ImGui::Button("Change colour background"))
                 {
                     change_colour_background = true;
+                }
+                //ImGuiIO& io = ImGui::GetIO();
+                //ImTextureID my_tex_id = io.Fonts->TexID;
+                //float my_tex_w = (float)io.Fonts->TexWidth;
+                //float my_tex_h = (float)io.Fonts->TexHeight;
+                {
+                    //static bool use_text_color_for_tint = false;
+                    //ImGui::Checkbox("Use Text Color for Tint", &use_text_color_for_tint);
+                    //ImGui::Text("%.0fx%.0f", my_tex_w, my_tex_h);
+                    //ImVec2 pos = ImGui::GetCursorScreenPos();
+                    //ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
+                    //ImVec2 uv_max = ImVec2(1.0f, 1.0f);                 // Lower-right
+                    //ImVec4 tint_col = use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
+                    //ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
+                    //ImGui::Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), uv_min, uv_max, tint_col, border_col);
+                    
+                    //int my_image_width = 0;
+                    //int my_image_height = 0;
+                    //GLuint my_image_texture = 0;
+                    //bool ret = LoadTextureFromFile("flashcard.png", &my_image_texture, &my_image_width, &my_image_height);
+                    //IM_ASSERT(ret);
+                    //ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
                 }
                 /*
                 if (ImGui::Button("Add a flash card"))
