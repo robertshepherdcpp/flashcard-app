@@ -318,6 +318,7 @@ int main(int, char**)
     bool login_window = false;
     bool user_logged_in = false;
     optional_bool LaunchFlashCard{false, false};
+    bool give_praise_on_getting_flashcard_right = false;
     LaunchFlashCard.set_names("launch_flash_card", "launch_flash_card_other");
     bool login_page_open = true;
     bool login_window_option = false;
@@ -636,17 +637,28 @@ int main(int, char**)
             {
                 give_error_message_answer_question = true;
                 test_on_flash_cards = false;
+                give_praise_on_getting_flashcard_right = true;
             }
             if (ImGui::Button(flashcards[random_number].answer.c_str()))
             {
                 test_on_flash_cards = false;
+                give_error_message_answer_question = false;
+                give_praise_on_getting_flashcard_right = true;
             }
             if (ImGui::Button(flashcards[random_number + 1].answer.c_str()))
             {
                 give_error_message_answer_question = true;
+                give_praise_on_getting_flashcard_right = false;
                 test_on_flash_cards = false;
             }
 
+            ImGui::End();
+        }
+
+        if (give_praise_on_getting_flashcard_right)
+        {
+            ImGui::Begin("Well done, you are a clever person!");
+            ImGui::Text("Well, done! The answer that you selected was right!");
             ImGui::End();
         }
 
