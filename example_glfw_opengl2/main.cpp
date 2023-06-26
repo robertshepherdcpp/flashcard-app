@@ -31,6 +31,7 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
     // Load from file
     int image_width = 0;
     int image_height = 0;
+    int random_number = 0;
     unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
     if (image_data == NULL)
         return false;
@@ -322,6 +323,7 @@ int main(int, char**)
     LaunchFlashCard.set_names("launch_flash_card", "launch_flash_card_other");
     bool login_page_open = true;
     bool login_window_option = false;
+    int random_number = 0;
     bool change_colour_background = false;
     user current_user{};
     bool test_on_flash_cards = false;
@@ -514,6 +516,7 @@ int main(int, char**)
 
         if (login_window_option)
         {
+            random_number = get_random_number(flashcards.size() - 1);
             ImGui::Begin("Login page");
             ImGui::Text("Who are you?");
             ImGui::NewLine();
@@ -623,7 +626,7 @@ int main(int, char**)
             ImGui::Begin("FlashCards Test");
             //int random_number = get_random_number(flashcards.size());
             // FIXME
-            int random_number = 2;
+            //int random_number = 2;
             if (random_number == 0)
             {
                 random_number = 1;
@@ -644,6 +647,7 @@ int main(int, char**)
                 test_on_flash_cards = false;
                 give_error_message_answer_question = false;
                 give_praise_on_getting_flashcard_right = true;
+                random_number = get_random_number(flashcards.size() - 1);
             }
             if (ImGui::Button(flashcards[random_number + 1].answer.c_str()))
             {
