@@ -20,6 +20,7 @@
 #include <fstream> // file manipulation
 #include <random> // for random things.
 #include <asio.hpp>
+#include <vector> // std::vector
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #define GL_CLAMP_TO_EDGE 0x812F
@@ -379,6 +380,7 @@ int main(int, char**)
         }
         return vec;
     }("flashcards.txt");
+    std::vector<int> flashcard_count(flashcards.size());
 
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -769,6 +771,7 @@ int main(int, char**)
             ImGui::Begin("FlashCard");
             flashcard current_flashcard = flashcards[current_flashcard_position];
             ImGui::Text(current_flashcard.question.c_str());
+            flashcard_count[current_flashcard_position] += 1;
             if (ImGui::Button("FLIP"))
             {
                 if ((point_count < 1000) && ((point_count + 5) >= 1000))
@@ -784,6 +787,7 @@ int main(int, char**)
             {
                 LaunchFlashCard.m_first = false;
             }
+            ImGui::Text("You have seen this flashcard %d times", flashcard_count[current_flashcard_position]);
             ImGui::End();
         }
 
@@ -792,6 +796,7 @@ int main(int, char**)
             ImGui::Begin("FlashCard");
             flashcard current_flashcard = flashcards[current_flashcard_position];
             ImGui::Text(current_flashcard.answer.c_str());
+            flashcard_count[current_flashcard_position] += 1;
             if (ImGui::Button("FLIP"))
             {
                 if ((point_count < 1000) && ((point_count + 5) >= 1000))
@@ -807,6 +812,7 @@ int main(int, char**)
             {
                 LaunchFlashCard.m_first = false;
             }
+            ImGui::Text("You have seen this flashcard %d times", flashcard_count[current_flashcard_position]);
             ImGui::End();
         }
 
