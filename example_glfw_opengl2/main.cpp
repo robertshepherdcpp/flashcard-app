@@ -380,7 +380,7 @@ int main(int, char**)
         }
         return vec;
     }("flashcards.txt");
-    std::vector<int> flashcard_count(flashcards.size());
+    std::vector<int> flashcard_count(flashcards.size() + 1);
 
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -541,6 +541,7 @@ int main(int, char**)
             ImGui::Begin("FlashCard manager", &show_another_window);
             if (ImGui::ArrowButton("##left", ImGuiDir_Left))
             {
+                flashcard_count[current_flashcard_position] += 1;
                 // FIXME make this actually visible
                 if (ImGui::IsItemHovered())
                 {
@@ -570,6 +571,7 @@ int main(int, char**)
             if (ImGui::ArrowButton("##right", ImGuiDir_Right))
             {
                 // FIXME make the item actually visible
+                flashcard_count[current_flashcard_position + 1] += 1;
                 if (ImGui::IsItemHovered())
                 {
                     ImGui::SetTooltip("Click me to get to the flashcard after");
@@ -771,7 +773,7 @@ int main(int, char**)
             ImGui::Begin("FlashCard");
             flashcard current_flashcard = flashcards[current_flashcard_position];
             ImGui::Text(current_flashcard.question.c_str());
-            flashcard_count[current_flashcard_position] += 1;
+            //flashcard_count[current_flashcard_position] += 1;
             if (ImGui::Button("FLIP"))
             {
                 if ((point_count < 1000) && ((point_count + 5) >= 1000))
@@ -796,7 +798,7 @@ int main(int, char**)
             ImGui::Begin("FlashCard");
             flashcard current_flashcard = flashcards[current_flashcard_position];
             ImGui::Text(current_flashcard.answer.c_str());
-            flashcard_count[current_flashcard_position] += 1;
+            //flashcard_count[current_flashcard_position] += 1;
             if (ImGui::Button("FLIP"))
             {
                 if ((point_count < 1000) && ((point_count + 5) >= 1000))
