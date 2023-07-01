@@ -8,6 +8,7 @@
 // See imgui_impl_glfw.cpp for details.
 
 #include "imgui.h"
+//#include "implot.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
 #include <stdio.h>
@@ -21,6 +22,8 @@
 #include <random> // for random things.
 #include <asio.hpp>
 #include <vector> // std::vector
+#include <algorithm> // std::max_element
+#include <ranges>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #define GL_CLAMP_TO_EDGE 0x812F
@@ -75,6 +78,19 @@ static void glfw_error_callback(int error, const char* description)
 }
 
 using asio::ip::tcp;
+
+namespace my
+{
+    auto iota(auto x)
+    {
+        std::vector<int> result{};
+        for (int i = 0; i < x; i++)
+        {
+            result.push_back(i);
+        }
+        return result;
+    }
+}
 
 std::string get_website_content(const std::string& host, const std::string& path) {
     std::string result;
@@ -328,6 +344,7 @@ int main(int, char**)
     bool change_colour_background = false;
     user current_user{};
     bool test_on_flash_cards = false;
+    bool should_show_statistics = false;
     std::vector<std::string> usernames{};
     std::vector<std::string> passwords{};
     std::vector<user> users = [&]()
@@ -519,6 +536,19 @@ int main(int, char**)
             }
             ImGui::End();
         }
+
+        /*
+        if (should_show_statistics)
+        {
+            ImGui::Begin("My Window");
+            if (ImPlot::BeginPlot("My Plot")) {
+                ImPlot::PlotBars("My Bar Plot", flashcard_count.data(), flashcard_count.size());
+                ImPlot::PlotLine("My Line Plot", my::iota(* std::max_element(flashcard_count.begin(), flashcard_count.end())).data(), my::iota(flashcard_count.size()).data(), 1000);
+                ImPlot::EndPlot();
+            }
+            ImGui::End();
+        }
+        */
 
         if (login_window_option)
         {

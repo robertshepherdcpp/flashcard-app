@@ -34,6 +34,12 @@
     <ClCompile Include="..\..\backends\imgui_impl_opengl2.cpp">
       <Filter>sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\implot-master\implot-master\implot.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\implot-master\implot-master\implot_items.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\imconfig.h">
@@ -52,6 +58,12 @@
       <Filter>sources</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\implot-master\implot-master\implot.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\implot-master\implot-master\implot_internal.h">
       <Filter>sources</Filter>
     </ClInclude>
   </ItemGroup>
