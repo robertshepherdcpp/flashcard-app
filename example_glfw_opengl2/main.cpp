@@ -413,6 +413,10 @@ int main(int, char**)
                 {
                     // do nothing just, it is just to show their username
                 }
+                if (ImGui::IsItemHovered())
+                {
+                    ImGui::SetTooltip("You have %d points", current_user.score);
+                }
                 ImGui::NewLine();
                 ImGui::NewLine();
                 if (ImGui::Button("Show me the flashcards"))
@@ -541,7 +545,10 @@ int main(int, char**)
             ImGui::Begin("FlashCard manager", &show_another_window);
             if (ImGui::ArrowButton("##left", ImGuiDir_Left))
             {
-                flashcard_count[current_flashcard_position] += 1;
+                if (current_flashcard_position > 0)
+                {
+                    flashcard_count[current_flashcard_position - 1] += 1;
+                }
                 // FIXME make this actually visible
                 if (ImGui::IsItemHovered())
                 {
