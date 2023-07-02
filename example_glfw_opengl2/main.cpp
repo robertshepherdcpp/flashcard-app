@@ -204,6 +204,16 @@ auto get_random_number(auto mod)
     return dist(rng);
 }
 
+auto vector_int_to_float(std::vector<int> const & vec_int) -> std::vector<float>
+{
+    std::vector<float> vec_float{};
+    for (const auto& x : vec_int)
+    {
+        vec_float.push_back(static_cast<float>(x));
+    }
+    return vec_float;
+}
+
 // this container is to help simplify the code
 struct optional_bool
 {
@@ -345,6 +355,7 @@ int main(int, char**)
     user current_user{};
     bool test_on_flash_cards = false;
     bool should_show_statistics = false;
+    ImVec2 graph_size(400, 300);
     std::vector<std::string> usernames{};
     std::vector<std::string> passwords{};
     std::vector<user> users = [&]()
@@ -537,18 +548,21 @@ int main(int, char**)
             ImGui::End();
         }
 
-        /*
         if (should_show_statistics)
         {
-            ImGui::Begin("My Window");
-            if (ImPlot::BeginPlot("My Plot")) {
-                ImPlot::PlotBars("My Bar Plot", flashcard_count.data(), flashcard_count.size());
-                ImPlot::PlotLine("My Line Plot", my::iota(* std::max_element(flashcard_count.begin(), flashcard_count.end())).data(), my::iota(flashcard_count.size()).data(), 1000);
-                ImPlot::EndPlot();
-            }
+            ImGui::Begin("Statistics");
+        //    if (ImPlot::BeginPlot("My Plot")) {
+        //        ImPlot::PlotBars("My Bar Plot", flashcard_count.data(), flashcard_count.size());
+        //        ImPlot::PlotLine("My Line Plot", my::iota(* std::max_element(flashcard_count.begin(), flashcard_count.end())).data(), my::iota(flashcard_count.size()).data(), 1000);
+        //        ImPlot::EndPlot();
+        //    }
+            ImGui::Text("This is a bar graph of how many time you have seen each flashcard.");
+            ImGui::NewLine();
+            std::vector<float> flashcard_count_floats = vector_int_to_float(flashcard_count);
+            ImGui::PlotHistogram("", flashcard_count_floats.data(), flashcard_count.size(), 0, NULL, 0.0f, FLT_MAX, ImVec2(2 * graph_size.x, 2 * graph_size.y));
+
             ImGui::End();
         }
-        */
 
         if (login_window_option)
         {
@@ -642,6 +656,7 @@ int main(int, char**)
             if (ImGui::Button("?"))
             {
                 current_flashcard_position = get_random_number(flashcards.size() - 1);
+                flashcard_count[current_flashcard_position] += 1;
                 LaunchFlashCard.m_first = true;
             }
             ImGui::NewLine();
@@ -658,6 +673,10 @@ int main(int, char**)
             if (ImGui::Button("Add flashcards from the web"))
             {
                 get_flashcards_from_web = true;
+            }
+            if (ImGui::Button("Show flashcard statistics"))
+            {
+                should_show_statistics = true;
             }
             ImGui::End();
         }
