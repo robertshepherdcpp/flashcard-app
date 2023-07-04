@@ -351,11 +351,13 @@ int main(int, char**)
     bool login_page_open = true;
     bool login_window_option = false;
     int random_number = 0;
+    bool open_my_own_flashcards = false;
     bool change_colour_background = false;
     user current_user{};
     bool test_on_flash_cards = false;
     bool should_show_statistics = false;
     ImVec2 graph_size(400, 300);
+    bool input_value_file = false;
     std::vector<std::string> usernames{};
     std::vector<std::string> passwords{};
     std::vector<user> users = [&]()
@@ -677,6 +679,49 @@ int main(int, char**)
             if (ImGui::Button("Show flashcard statistics"))
             {
                 should_show_statistics = true;
+            }
+            ImGui::NewLine();
+            if (ImGui::Button("Open My Own Flashcards"))
+            {
+                open_my_own_flashcards = true;
+            }
+            ImGui::End();
+        }
+
+        if (open_my_own_flashcards)
+        {
+            ImGui::Begin("Open My Own Flashcards");
+            std::string myString{};
+            char buffer[256];
+            strncpy(buffer, myString.c_str(), sizeof(buffer) - 1);
+            buffer[sizeof(buffer) - 1] = 0;
+            ImGui::InputText("##myString", buffer, sizeof(buffer));
+            myString = buffer;
+            ImGui::SameLine();
+            if (ImGui::Button("Done"))
+            {
+                input_value_file = true;
+                if (input_value_file)
+                {
+                    std::vector<flashcard> flashcards_two = [](std::string s)
+                    {
+                        std::string line{};
+                        std::vector<flashcard> vec{};
+                        std::ifstream myfile(s.c_str());
+                        if (myfile.is_open())
+                        {
+                            while (std::getline(myfile, line))
+                            {
+                                std::string first_part = get_question(line);
+                                std::string second_part = get_answer(line);
+                                vec.push_back(flashcard{ first_part, second_part });
+                            }
+                            myfile.close();
+                        }
+                        return vec;
+                    }(myString);
+                    flashcards = std::move(flashcards_two);
+                }
             }
             ImGui::End();
         }
