@@ -714,7 +714,7 @@ int main(int, char**)
                             {
                                 std::string first_part = get_question(line);
                                 std::string second_part = get_answer(line);
-                                vec.push_back(flashcard{ first_part, second_part });
+                                vec.emplace_back(flashcard{ first_part, second_part });
                             }
                             myfile.close();
                         }
