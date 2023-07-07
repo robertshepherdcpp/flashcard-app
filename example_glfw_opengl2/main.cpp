@@ -377,9 +377,9 @@ int main(int, char**)
                 }();
                 std::string password = [&]()
                 {
-                    int index_of_chevrons_into = line.find("<<");
-                    int index_of_chevrons_outo = line.find(">>");
-                    passwords.push_back(std::string{ line.substr(index_of_chevrons_into + 3, index_of_chevrons_outo - 1) });
+                    std::size_t index_of_chevrons_into = line.find("<<");
+                    std::size_t index_of_chevrons_outo = line.find(">>");
+                    passwords.emplace_back(std::string{ line.substr(index_of_chevrons_into + 3, index_of_chevrons_outo - 1) });
                     return std::string{line.substr(index_of_chevrons_into + 3, index_of_chevrons_outo - 1)};
                 }();
                 int score = [=]()
@@ -387,7 +387,7 @@ int main(int, char**)
                     int index_of_chevrons_outo = line.find(">>");
                     return std::stoi(std::string{line.substr(index_of_chevrons_outo + 3, line.size())});
                 }();
-                vec.push_back(user{ username, password, score });
+                vec.emplace_back(user{ username, password, score });
             }
             myfile.close();
         }
@@ -404,7 +404,7 @@ int main(int, char**)
             {
                 std::string first_part = get_question(line);
                 std::string second_part = get_answer(line);
-                vec.push_back(flashcard{ first_part, second_part });
+                vec.emplace_back(flashcard{ first_part, second_part });
             }
             myfile.close();
         }
@@ -430,12 +430,9 @@ int main(int, char**)
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         {
             ImGui::Begin("FlashCards App");
-            if (!user_logged_in)
+            if (!user_logged_in && ImGui::Button("Login"))
             {
-                if (ImGui::Button("Login"))
-                {
-                    login_window_option = true;
-                }
+                login_window_option = true;
             }
             if (user_logged_in)
             {
