@@ -166,10 +166,29 @@ namespace exceptions
     };
 }; // namespace exceptions
 
+template<typename T>
+struct not_const_once
+{
+    not_const_once() {};
+private:
+    bool m_already_assigned = false;
+    T m_value;
+};
+
 struct flashcard
 {
     std::string question{};
     std::string answer{};
+
+    friend bool operator==(flashcard const lhs, flashcard const rhs)
+    {
+        return (lhs.question == rhs.question) && (lhs.answer == rhs.answer);
+    }
+
+    friend bool operator!=(flashcard const lhs, flashcard const rhs)
+    {
+        return !(lhs == rhs);
+    }
 };
 
 auto get_question(std::string& s) -> std::string
@@ -297,6 +316,8 @@ struct user
 int colour_background_one = 63;
 int colour_background_two = 200;
 int colour_background_three = 6;
+int original_flashcard_count = 0;
+bool already_original_flashcard_count = false;
 
 // Main code
 int main(int, char**)
@@ -339,13 +360,13 @@ int main(int, char**)
     float spacing = ImGui::GetStyle().ItemInnerSpacing.x;
     int current_flashcard_position = 0;
     bool give_error_message_answer_question = false;
-    optional_bool IsQuestionAnswer{true, false};
+    optional_bool IsQuestionAnswer{ true, false };
     IsQuestionAnswer.set_names("IsQuestion", "IsAnswer");
     int point_count = 0;
     bool celebrate_thousand_points = false;
     bool login_window = false;
     bool user_logged_in = false;
-    optional_bool LaunchFlashCard{false, false};
+    optional_bool LaunchFlashCard{ false, false };
     bool give_praise_on_getting_flashcard_right = false;
     LaunchFlashCard.set_names("launch_flash_card", "launch_flash_card_other");
     bool login_page_open = true;
@@ -358,8 +379,10 @@ int main(int, char**)
     bool should_show_statistics = false;
     ImVec2 graph_size(400, 300);
     bool input_value_file = false;
+    //not_const_once<int> original_flashcards_count();
     std::vector<std::string> usernames{};
     std::vector<std::string> passwords{};
+    std::vector<flashcard> known_flashcards{};
     std::vector<user> users = [&]()
     {
         std::string line{};
@@ -372,7 +395,7 @@ int main(int, char**)
                 std::string username = [&]()
                 {
                     int index_of_chevrons_into = line.find("<<");
-                    usernames.push_back(std::string{ line.substr(0, index_of_chevrons_into - 1) });
+                    usernames.emplace_back(std::string{ line.substr(0, index_of_chevrons_into - 1) });
                     return std::string{ line.substr(0, index_of_chevrons_into - 1) };
                 }();
                 std::string password = [&]()
@@ -393,7 +416,7 @@ int main(int, char**)
         }
         return vec;
     }();
-    std::vector<flashcard> flashcards = [](std::string s)
+    std::vector<flashcard> flashcards = [=](std::string s) mutable
     {
         std::string line{};
         std::vector<flashcard> vec{};
@@ -407,6 +430,15 @@ int main(int, char**)
                 vec.emplace_back(flashcard{ first_part, second_part });
             }
             myfile.close();
+        }
+        if (already_original_flashcard_count)
+        {
+            // do nothing as the value has already been assigned to.
+        }
+        else
+        {
+            original_flashcard_count = static_cast<int>(vec.size());
+            already_original_flashcard_count = true;
         }
         return vec;
     }("flashcards.txt");
@@ -682,6 +714,7 @@ int main(int, char**)
             {
                 open_my_own_flashcards = true;
             }
+            ImGui::Text("You know %d/%d flashcards", known_flashcards.size(), original_flashcard_count);
             ImGui::End();
         }
 
@@ -887,6 +920,12 @@ int main(int, char**)
             {
                 LaunchFlashCard.m_first = false;
             }
+            ImGui::SameLine();
+            if (ImGui::Button("I know this flashcard now"))
+            {
+                known_flashcards.push_back(current_flashcard);
+                std::erase(flashcards, current_flashcard);
+            }
             ImGui::Text("You have seen this flashcard %d times", flashcard_count[current_flashcard_position]);
             ImGui::End();
         }
@@ -911,6 +950,12 @@ int main(int, char**)
             if (ImGui::Button("QUIT"))
             {
                 LaunchFlashCard.m_first = false;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("I know this flashcard now"))
+            {
+                known_flashcards.push_back(current_flashcard);
+                std::erase(flashcards, current_flashcard);
             }
             ImGui::Text("You have seen this flashcard %d times", flashcard_count[current_flashcard_position]);
             ImGui::End();
