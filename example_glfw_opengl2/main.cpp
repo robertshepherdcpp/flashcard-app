@@ -319,6 +319,33 @@ int colour_background_three = 6;
 int original_flashcard_count = 0;
 bool already_original_flashcard_count = false;
 
+std::vector<flashcard> flashcards = [=](std::string s) mutable
+{
+    std::string line{};
+    std::vector<flashcard> vec{};
+    std::ifstream myfile(s.c_str());
+    if (myfile.is_open())
+    {
+        while (std::getline(myfile, line))
+        {
+            std::string first_part = get_question(line);
+            std::string second_part = get_answer(line);
+            vec.emplace_back(flashcard{ first_part, second_part });
+        }
+        myfile.close();
+    }
+    if (already_original_flashcard_count)
+    {
+        // do nothing as the value has already been assigned to.
+    }
+    else
+    {
+        original_flashcard_count = static_cast<int>(vec.size());
+        already_original_flashcard_count = true;
+    }
+    return vec;
+}("flashcards.txt");
+
 // Main code
 int main(int, char**)
 {
@@ -416,32 +443,6 @@ int main(int, char**)
         }
         return vec;
     }();
-    std::vector<flashcard> flashcards = [=](std::string s) mutable
-    {
-        std::string line{};
-        std::vector<flashcard> vec{};
-        std::ifstream myfile(s.c_str());
-        if (myfile.is_open())
-        {
-            while (std::getline(myfile, line))
-            {
-                std::string first_part = get_question(line);
-                std::string second_part = get_answer(line);
-                vec.emplace_back(flashcard{ first_part, second_part });
-            }
-            myfile.close();
-        }
-        if (already_original_flashcard_count)
-        {
-            // do nothing as the value has already been assigned to.
-        }
-        else
-        {
-            original_flashcard_count = static_cast<int>(vec.size());
-            already_original_flashcard_count = true;
-        }
-        return vec;
-    }("flashcards.txt");
     std::vector<int> flashcard_count(flashcards.size() + 1);
 
     // Main loop

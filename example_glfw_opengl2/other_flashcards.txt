@@ -1,0 +1,5 @@
+what is your name? || Robert
+Capital of Japan? || Tokyo
+Capital of USA? || Washington
+Favourite chinese food? || Spring rolls
+Favourite indian food? || Lamb Korma

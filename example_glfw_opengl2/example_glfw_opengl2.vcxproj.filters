@@ -66,6 +66,7 @@
     <Text Include="users.txt">
       <Filter>sources</Filter>
     </Text>
+    <Text Include="other_flashcards.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="flashcard.png" />
