@@ -1,11 +1,5 @@
-// Dear ImGui: standalone example application for GLFW + OpenGL2, using legacy fixed pipeline
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
-// If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
-// Read online: https://github.com/ocornut/imgui/tree/master/docs
-
-// **DO NOT USE THIS CODE IF YOUR CODE/ENGINE IS USING MODERN OPENGL (SHADERS, VBO, VAO, etc.)**
-// **Prefer using the code in the example_glfw_opengl2/ folder**
-// See imgui_impl_glfw.cpp for details.
+// This is main.cpp file for a flashcard-app written using C++20 and ImGui
+// contact me rshepherdcpp@gmail.com
 
 #include "imgui.h"
 //#include "implot.h"
@@ -448,11 +442,6 @@ int main(int, char**)
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
-        // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
 
         // Start the Dear ImGui frame
@@ -488,27 +477,8 @@ int main(int, char**)
                 {
                     change_colour_background = true;
                 }
-                //ImGuiIO& io = ImGui::GetIO();
-                //ImTextureID my_tex_id = io.Fonts->TexID;
-                //float my_tex_w = (float)io.Fonts->TexWidth;
-                //float my_tex_h = (float)io.Fonts->TexHeight;
+
                 {
-                    //static bool use_text_color_for_tint = false;
-                    //ImGui::Checkbox("Use Text Color for Tint", &use_text_color_for_tint);
-                    //ImGui::Text("%.0fx%.0f", my_tex_w, my_tex_h);
-                    //ImVec2 pos = ImGui::GetCursorScreenPos();
-                    //ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
-                    //ImVec2 uv_max = ImVec2(1.0f, 1.0f);                 // Lower-right
-                    //ImVec4 tint_col = use_text_color_for_tint ? ImGui::GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
-                    //ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
-                    //ImGui::Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), uv_min, uv_max, tint_col, border_col);
-                    
-                    //int my_image_width = 0;
-                    //int my_image_height = 0;
-                    //GLuint my_image_texture = 0;
-                    //bool ret = LoadTextureFromFile("flashcard.png", &my_image_texture, &my_image_width, &my_image_height);
-                    //IM_ASSERT(ret);
-                    //ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
                 }
                 /*
                 if (ImGui::Button("Add a flash card"))
@@ -896,12 +866,16 @@ int main(int, char**)
         {
             ImGui::Begin("You got the question wrong :(");
             ImGui::Text("Sorry but the answer you selected was not true. Dont worry just try again :)");
+            ImGui::NewLine();
+            if (ImGui::Button("Quit"))
+            {
+                give_error_message_answer_question = false;
+            }
             ImGui::End();
         }
 
         if (LaunchFlashCard.m_first)
         {
-            //IsQuestionAnswer.set_bools(true, false);
             ImGui::Begin("FlashCard");
             flashcard current_flashcard = flashcards[current_flashcard_position];
             ImGui::Text(current_flashcard.question.c_str());
