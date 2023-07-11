@@ -665,6 +665,8 @@ int main(int, char**)
             ImGui::NewLine();
             if (ImGui::Button("Test"))
             {
+                give_error_message_answer_question = false;
+                give_praise_on_getting_flashcard_right = false;
                 test_on_flash_cards = true;
             }
 
