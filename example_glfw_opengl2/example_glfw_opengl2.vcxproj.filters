@@ -51,9 +51,6 @@
     <ClInclude Include="..\..\backends\imgui_impl_opengl2.h">
       <Filter>sources</Filter>
     </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>sources</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.txt" />
