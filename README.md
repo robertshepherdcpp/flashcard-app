@@ -9,8 +9,8 @@ The external dependencies for `flashcard-app` are: asio (a networking library)
 
 Where I am so far with my ImGui flashcard app: [godbolt link](https://godbolt.org/z/Kr9Prq8r3)
 
-Things you can do with flashcard-app:
-
+**Things you can do with flashcard-app:**
+```
     - Test yourself on flashcards
     
     - Add flashcards
@@ -22,4 +22,4 @@ Things you can do with flashcard-app:
     - Customise the look of the app
     
     - Score points for completing challanges
-    
+```
