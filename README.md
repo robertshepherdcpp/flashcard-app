@@ -11,8 +11,14 @@ Where I am so far with my ImGui flashcard app: [godbolt link](https://godbolt.or
 
 Things you can do with flashcard-app:
     - Test yourself on flashcards
+    
     - Add flashcards
+    
     - Get flashcards from the web
+    
     - Look at flashcards
+    
     - Customise the look of the app
+    
     - Score points for completing challanges
+    
