@@ -320,7 +320,8 @@ int main(int, char**)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiStyle& style = ImGui::GetStyle();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO& io = ImGui::GetIO();
+    // io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesChinese());
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     //style.Colors[ImGuiCol_Text] = ImColor(2, 2, 2);
