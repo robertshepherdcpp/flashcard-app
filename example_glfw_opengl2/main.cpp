@@ -321,7 +321,7 @@ int main(int, char**)
     ImGui::CreateContext();
     ImGuiStyle& style = ImGui::GetStyle();
     ImGuiIO& io = ImGui::GetIO();
-    // io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesChinese());
+    //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesChinese());
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     //style.Colors[ImGuiCol_Text] = ImColor(2, 2, 2);
@@ -800,6 +800,7 @@ int main(int, char**)
             ImGui::SameLine(0.0f, spacing);
             ImGui::Text("%d", colour_background_three);
             ImGui::NewLine();
+            style.Colors[ImGuiCol_WindowBg] = ImColor(colour_background_one, colour_background_two, colour_background_three);
             ImGui::End();
         }
 
