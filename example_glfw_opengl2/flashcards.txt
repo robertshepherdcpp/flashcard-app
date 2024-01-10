@@ -9,4 +9,5 @@ just tested it does it do chinese? || .... No! :(
 你好吗？ || 我很好谢谢
 What is the capital of China || The capital of China is Beijing.
 咖啡在桌子上 || The coffee is on the table
-What is the capital of spain || The capital of spain is Madrid.
+What is the capital of Spain || The capital of spain is Madrid.
+What is the capital of Kenya || The capital of Kenya is Niarobi
