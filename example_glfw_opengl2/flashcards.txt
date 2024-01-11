@@ -4,10 +4,11 @@ what is the time? || the time is past your bedtime
 what is the date? || time to get a calendar
 what is the month? || time to get a monthometer
 when am i going to finish building this flash card app? || I dont know!
-does this do chinese || were about to find out!
+does this do chinese? || were about to find out!
 just tested it does it do chinese? || .... No! :(
 你好吗？ || 我很好谢谢
-What is the capital of China || The capital of China is Beijing.
+What is the capital of China? || The capital of China is Beijing.
 咖啡在桌子上 || The coffee is on the table
-What is the capital of Spain || The capital of spain is Madrid.
-What is the capital of Kenya || The capital of Kenya is Niarobi
+What is the capital of Spain? || The capital of spain is Madrid.
+What is the capital of Kenya? || The capital of Kenya is Niarobi
+What year did World War 1 start? || World War 1 started in 1914
