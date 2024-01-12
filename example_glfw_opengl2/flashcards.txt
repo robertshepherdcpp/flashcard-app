@@ -12,3 +12,4 @@ What is the capital of China? || The capital of China is Beijing.
 What is the capital of Spain? || The capital of spain is Madrid.
 What is the capital of Kenya? || The capital of Kenya is Niarobi
 What year did World War 1 start? || World War 1 started in 1914
+What is the population of London? || Around 10 million
