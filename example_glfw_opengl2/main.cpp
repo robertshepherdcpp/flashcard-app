@@ -807,7 +807,7 @@ int main(int, char**)
         if (get_flashcards_from_web)
         {
             ImGui::Begin("Get flashcards from the web");
-            static char str0[128] = "Hello, world!";
+            static char str0[128] = "http://www.sfml-dev.org/features.php";
             ImGui::InputText("input text", str0, IM_ARRAYSIZE(str0));
             std::string input{str0};
             ImGui::Text(input.c_str());
