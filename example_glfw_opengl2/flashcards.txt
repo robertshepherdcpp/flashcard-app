@@ -16,3 +16,4 @@ What is the population of London? || Around 10 million
 What programming langauge was this application made with? || C++
 What GUI library was this made with? || This application was made with ImGui.
 What is 126 + 256? || 126 + 256 is 382.
+What is the most used programming language in the world? || Javascript
