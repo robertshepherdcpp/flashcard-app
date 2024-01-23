@@ -20,3 +20,4 @@ What is the most used programming language in the world? || Javascript
 What is the second most popular programming language in the world? || Python
 What is the capital of England || London
 What are some similiar programming languages to C++? || C# and C
+Name some components of the eye || Schera, Lens, Ciliary muscles
