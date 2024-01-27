@@ -23,3 +23,4 @@ What are some similiar programming languages to C++? || C# and C
 Name some components of the eye || Schera, Lens, Ciliary muscles
 What is another name for godbolt.org? || Compiler Explorer
 What is 49 / 7? || 7
+What is 7 % 2 || 7 % 2 = 1
