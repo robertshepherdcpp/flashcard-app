@@ -31,3 +31,4 @@ What is the capital of the USA? || Washington DC
 What is 10 squared? || 100
 What is 10 DIV 3 || 3
 What is the square root of 64 ? 8
+What is one of the most famous foods in America? || The hamburger
