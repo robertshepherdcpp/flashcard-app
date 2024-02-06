@@ -1,4 +1,4 @@
-﻿hello? || hello_how_are_you
+h﻿hello? || hello_how_are_you
 goodbye? || goodbye_how_are_you
 what is the time? || the time is past your bedtime
 what is the date? || time to get a calendar
@@ -30,5 +30,6 @@ What time is London based of of on UTC || UTC  + 0
 What is the capital of the USA? || Washington DC
 What is 10 squared? || 100
 What is 10 DIV 3 || 3
-What is the square root of 64 ? 8
+What is the square root of 64 ? || 8
 What is one of the most famous foods in America? || The hamburger
+What is a GUI? || Graphical User Interface
