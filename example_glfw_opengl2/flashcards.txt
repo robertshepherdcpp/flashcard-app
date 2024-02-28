@@ -1,4 +1,4 @@
-fh﻿hello? || hello_how_are_you
+hfh﻿hello? || hello_how_are_you
 goodbye? || goodbye_how_are_you
 what is the time? || the time is past your bedtime
 what is the date? || time to get a calendar
@@ -41,3 +41,4 @@ What is the second biggest city in England? || Birmingham
 What tastes better Pepsi or coca cola? || Pepsi
 What is the capital of Morocco? || Rabbat
 What is the most popular drink in the world? || Water!
+What drink are the British famous for? || tea
