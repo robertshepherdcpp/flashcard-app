@@ -42,4 +42,4 @@ What tastes better Pepsi or coca cola? || Pepsi
 What is the capital of Morocco? || Rabbat
 What is the most popular drink in the world? || Water!
 What drink are the British famous for? || tea
-What is the best GUI framework in c++? || ImGui!
+What is the best GUI framework in c++? || ImGuiName a popular functional programming langauge || Haskell
