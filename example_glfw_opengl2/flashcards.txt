@@ -1,4 +1,4 @@
-hfh﻿hello? || hello_how_are_you
+hhfh﻿hello? || hello_how_are_you
 goodbye? || goodbye_how_are_you
 what is the time? || the time is past your bedtime
 what is the date? || time to get a calendar
@@ -43,3 +43,4 @@ What is the capital of Morocco? || Rabbat
 What is the most popular drink in the world? || Water!
 What drink are the British famous for? || tea
 What is the best GUI framework in c++? || ImGuiName a popular functional programming langauge || Haskell
+What is the capital city of Argentina? || Buenos aires
