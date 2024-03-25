@@ -5,7 +5,7 @@ example flashcards:
 
 ![alt text](https://github.com/robertshepherdcpp/robertshepherdcpp/blob/main/imgui_cpp_flashcard_app.JPG)
 
-The external dependencies for `flashcard-app` are: asio (a networking library)
+The external dependencies for `flashcard-app` are: asio (a networking library) and ImGui (the GUI library)
 
 Where I am so far with my ImGui flashcard app: [godbolt link](https://godbolt.org/z/Kr9Prq8r3)
 
