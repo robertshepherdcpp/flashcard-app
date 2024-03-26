@@ -55,3 +55,4 @@ What is a popular gaming console? || Xbox
 What major company led to the downfall of blockbusters? || Netflix
 What is the slowest commercial high speed train in the UK? GWR
 What does D of E stamd for? Duke of Edinburgh.
+What are the external dependencies of this repository? || ImGui and Asio.
