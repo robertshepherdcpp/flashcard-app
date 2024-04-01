@@ -1,4 +1,4 @@
-lhhfh﻿hello? || hello_how_are_you
+⁴lhhfh﻿hello? || hello_how_are_you
 goodbye? || goodbye_how_are_you
 what is the time? || the time is past your bedtime
 what is the date? || time to get a calendar
@@ -57,3 +57,4 @@ What is the slowest commercial high speed train in the UK? GWR
 What does D of E stamd for? Duke of Edinburgh.
 What are the external dependencies of this repository? || ImGui and Asio.
 What is capital of Austria? || Vienna
+What does GNI stand for? || Gross National Income
