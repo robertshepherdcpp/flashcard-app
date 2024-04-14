@@ -21,5 +21,5 @@ Where I am so far with my ImGui flashcard app: [godbolt link](https://godbolt.or
     
     - Customise the look of the app
     
-    - Score points for completing challanges
+    - Score points by completing challanges
 ```
