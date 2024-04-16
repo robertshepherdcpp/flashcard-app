@@ -61,3 +61,4 @@ What is capital of Austria? || Vienna
 What does GNI stand for? || Gross National Income
 What is a popular framework used for 3d objects in Javascript || Three.js
 What framework made by google allows you to develop apps for apple and android using the same codebase? || Flutter
+What is the capital of Croatia || Zagreb
