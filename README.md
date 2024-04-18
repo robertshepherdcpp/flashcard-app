@@ -13,7 +13,7 @@ Where I am so far with my ImGui flashcard app: [godbolt link](https://godbolt.or
 ```
     - Test yourself on flashcards
     
-    - Add flashcards
+    - Add and save flashcards
     
     - Get flashcards from the web
     
