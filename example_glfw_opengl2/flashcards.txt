@@ -64,3 +64,4 @@ What framework made by google allows you to develop apps for apple and android u
 What is the capital of Croatia || Zagreb
 What is the capital of Serbia || Belgrade
 What is hello in spanish? || hola
+What is hello in German? || halo
