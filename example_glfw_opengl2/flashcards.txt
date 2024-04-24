@@ -65,3 +65,4 @@ What is the capital of Croatia || Zagreb
 What is the capital of Serbia || Belgrade
 What is hello in spanish? || hola
 What is hello in German? || halo
+What is hello in Russian? || privet
