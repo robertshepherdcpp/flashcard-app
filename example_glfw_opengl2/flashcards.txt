@@ -70,3 +70,4 @@ What is the capital of Russia? || Moscow
 What is the capital of peru? || lima
 How long did it take to make Javascript? || 10 days
 Who is the creator of Javascript? || Brendan Eich
+Who created the R language? || Ross Ihaka and Robert Gentleman
