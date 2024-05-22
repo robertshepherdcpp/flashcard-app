@@ -74,3 +74,4 @@ Who created the R language? || Ross Ihaka and Robert Gentleman
 What language can be used to make Android apps? || Java
 What is the definition of an ionic bond? || The electrostatic attraction between a 2 oppositly charged ions.
 What is the STL short for? || Standard Template Library
+What is the header file for std::pair? || utility
