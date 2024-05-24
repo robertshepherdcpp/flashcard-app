@@ -76,3 +76,4 @@ What is the definition of an ionic bond? || The electrostatic attraction between
 What is the STL short for? || Standard Template Library
 What is the header file for std::pair? || utility
 What is the header file for std::vector? || vector
+What is the header file for std::find? || algorithm
