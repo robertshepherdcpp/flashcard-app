@@ -1,4 +1,4 @@
-dhello? || hello_how_are_you
+3dhello? || hello_how_are_you
 goodbye? || goodbye_how_are_you
 what is the time? || the time is past your bedtime
 what is the date? || time to get a calendar
@@ -88,3 +88,4 @@ What language is tkinter written in? || Python
 What is flask written in? || Python
 Where is St.Ives? || Cornwall
 what animal is this word rearranged: leas? ||  seal
+What is simplinc? || a simple computer interface.
