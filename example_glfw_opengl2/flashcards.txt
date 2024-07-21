@@ -89,3 +89,4 @@ What is flask written in? || Python
 Where is St.Ives? || Cornwall
 what animal is this word rearranged: leas? ||  seal
 What is simplinc? || a simple computer interface.
+Where can you buy simplinc? || simplinc.myshopify.com
