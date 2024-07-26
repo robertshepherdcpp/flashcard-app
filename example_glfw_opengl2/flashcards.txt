@@ -91,3 +91,4 @@ what animal is this word rearranged: leas? ||  seal
 What is simplinc? || a simple computer interface.
 Where can you buy simplinc? || simplinc.myshopify.com
 Why is simplinc called simplinc? || because it is a simple interface for a computer
+What was simplinc developed with? || electron js
