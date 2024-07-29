@@ -49,7 +49,7 @@ Name a popular programming langauge for Windows development || C#
 Name a company that Elon Musk co-founded || Nueralink
 Name a popular programming course website || Udemy
 Name another popular programming course website || Coursera
-Name a popular mobile gaming corporation || supercell
+Name a popular mobile gaming corporation? || supercell
 Name one of supercell's popular games || Hayday
 What is a popular gaming console? || Xbox
 What major company led to the downfall of blockbusters? || Netflix
