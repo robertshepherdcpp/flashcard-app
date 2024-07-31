@@ -93,3 +93,4 @@ Where can you buy simplinc? || simplinc.myshopify.com
 Why is simplinc called simplinc? || because it is a simple interface for a computer
 What was simplinc developed with? || electron js
 How much is simplinc? || 4.99
+What language was simplinc originally programmed in? || C++
