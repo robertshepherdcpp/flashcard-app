@@ -24,7 +24,7 @@ Name some components of the eye || Schera, Lens, Ciliary muscles
 What is another name for godbolt.org? || Compiler Explorer
 What is 49 / 7? || 7
 What is 7 % 2 || 7 % 2 = 1
-Who is the greater of C++? Bjarne Stroustup
+Who is the greater of C++? || Bjarne Stroustup
 What I the capital of Mexico? || Mexico city
 What time is London based of of on UTC || UTC  + 0
 What is the capital of the USA? || Washington DC
