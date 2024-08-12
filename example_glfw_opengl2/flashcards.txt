@@ -94,3 +94,4 @@ Why is simplinc called simplinc? || because it is a simple interface for a compu
 What was simplinc developed with? || electron js
 How much is simplinc? || 4.99
 What language was simplinc originally programmed in? || C++
+What is Welsh for slow? || araf
