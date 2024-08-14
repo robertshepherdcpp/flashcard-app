@@ -1,4 +1,4 @@
-3hello? || hello_how_are_you
+hello? || hello_how_are_you
 goodbye? || goodbye_how_are_you
 what is the time? || the time is past your bedtime
 what is the date? || time to get a calendar
@@ -96,3 +96,4 @@ How much is simplinc? || 4.99
 What language was simplinc originally programmed in? || C++
 What is Welsh for slow? || araf
 What us Welsh for coffee? || coffi
+What type of company is Cisco? || Technology
