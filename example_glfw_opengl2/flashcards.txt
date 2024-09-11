@@ -100,4 +100,5 @@ What type of company is Cisco? || Technology
 What is xpeng? || An electric car company
 what is bad || An electric car company 
 Where is Samsung from? || South Korea
-Where are nvidia chips made? || Taiwan
+Where are Nvidia chips made? || Taiwan
+What is the name of a major chip company based in Taiwan? || TSM
