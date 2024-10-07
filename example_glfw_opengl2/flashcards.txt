@@ -104,3 +104,4 @@ Where are Nvidia chips made? || Taiwan
 What is the name of a major chip company based in Taiwan? || TSM
 What is a popular trading app? || Trading 212
 What is a popular database management system? || SQL Lite
+What does VAE stand for? || variations auto encoders
