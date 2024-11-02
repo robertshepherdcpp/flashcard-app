@@ -1,4 +1,4 @@
-1. hello? || hello_how_are_you
+hello? || hello_how_are_you
 goodbye? || goodbye_how_are_you
 what is the time? || the time is past your bedtime
 what is the date? || time to get a calendar
