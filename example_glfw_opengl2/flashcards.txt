@@ -107,3 +107,4 @@ What is a popular database management system? || SQL Lite
 What does VAE stand for? || variations auto encoders
 What is a popular no sql database platform? || mongodb
 Name an activation function || tanh
+Name the activation function that always returns a value greater than or equal 0 || relu
