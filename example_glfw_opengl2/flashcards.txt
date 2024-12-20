@@ -108,3 +108,4 @@ What does VAE stand for? || variations auto encoders
 What is a popular no sql database platform? || mongodb
 Name an activation function || tanh
 Name the activation function that always returns a value greater than or equal 0 || relu
+What does RAM stand for? || Random Access Memory
