@@ -111,3 +111,4 @@ Name the activation function that always returns a value greater than or equal 0
 What does RAM stand for? || Random Access Memory
 What is the capital of Oman? || Muscat
 What is the capital of Suriname? || Paramaribo
+Name a popular mobile game similar to tetris || block blast
