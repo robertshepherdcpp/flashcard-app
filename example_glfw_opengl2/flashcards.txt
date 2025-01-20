@@ -113,3 +113,4 @@ What is the capital of Oman? || Muscat
 What is the capital of Suriname? || Paramaribo
 Name a popular mobile game similar to tetris || Block Blast
 Who is one of the most famous stock investors in the world? || Warren Buffet
+Why does wind speed increase the rate of transpiration? || the wind blows away any evaported water (water vapour) so that there is a  high concentration gradient
