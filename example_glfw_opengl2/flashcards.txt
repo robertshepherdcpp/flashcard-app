@@ -116,3 +116,4 @@ Who is one of the most famous stock investors in the world? || Warren Buffet
 Why does wind speed increase the rate of transpiration? || the wind blows away any evaported water (water vapour) so that there is a  high concentration gradient
 What is the name of the process which causes death of marine life due to increases in nitrate and phosphate levels in water? || Eutrophication
 Name of chinese ai reasoning model released in early 2025? || Deepseek
+What is a gene? || A part of DNA
