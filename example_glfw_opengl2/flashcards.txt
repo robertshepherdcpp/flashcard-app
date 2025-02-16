@@ -117,3 +117,4 @@ Why does wind speed increase the rate of transpiration? || the wind blows away a
 What is the name of the process which causes death of marine life due to increases in nitrate and phosphate levels in water? || Eutrophication
 Name of chinese ai reasoning model released in early 2025? || Deepseek
 What is a gene? || A part of DNA
+What is water in German? || Wasser
