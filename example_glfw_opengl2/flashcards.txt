@@ -120,3 +120,4 @@ What is a gene? || A part of DNA
 What is water in German? || Wasser
 Name the function used in CSS to transform an element so that it is rotated? || rotate
 What method can be used to give a solution to two sum in o(n) time? || hash map
+What time complexity is merge sort? O(n log n) 
