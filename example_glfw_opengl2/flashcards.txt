@@ -124,3 +124,4 @@ What time complexity is merge sort? O(n log n)
 What is the time complexity of heap sort? || o(n log n)
 Time complexity of insertion sort? || o(n^2)
 What is good morning in german? || guten morgen 
+What is please in German? || Bitte
