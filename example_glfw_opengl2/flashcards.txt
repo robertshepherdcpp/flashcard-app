@@ -125,3 +125,4 @@ What is the time complexity of heap sort? || o(n log n)
 Time complexity of insertion sort? || o(n^2)
 What is good morning in german? || guten morgen 
 What is please in German? || Bitte
+What are the 2 main methods for finding all elements in a tree? || Binary search, breadth first search 
