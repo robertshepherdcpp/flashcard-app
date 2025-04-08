@@ -123,6 +123,7 @@ What method can be used to give a solution to two sum in o(n) time? || hash map
 What time complexity is merge sort? O(n log n)
 What is the time complexity of heap sort? || o(n log n)
 Time complexity of insertion sort? || o(n^2)
+Time complexity of checking a value is in a set in Python? || o(1)
 What is good morning in german? || guten morgen 
 What is please in German? || Bitte
 What are the 2 main methods for finding all elements in a tree? || Binary search, breadth first search 
