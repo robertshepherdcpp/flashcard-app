@@ -128,3 +128,4 @@ What is good morning in german? || guten morgen
 What is please in German? || Bitte
 What are the 2 main methods for finding all elements in a tree? || Binary search, breadth first search 
 What is (sin theta) / (cos theta)? || tan theta
+What is one of the main reasons for the USA joining the war in 1917? || the sinking of the Lusitania.
