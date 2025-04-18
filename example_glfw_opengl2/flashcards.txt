@@ -136,3 +136,4 @@ What sequence is the Sun currently in? || Main sequence
 What sequence comes after the main star sequence? || red giant or red super giant
 When was Penicillin discovered? || 1928
 What is the name of the enzyme that cuts DNA? || restriction enzyme
+What is the physics equation involving force, mass and acceleration? || F = ma
